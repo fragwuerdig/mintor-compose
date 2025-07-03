@@ -1,0 +1,30 @@
+services:
+  backend:
+    image: rebel-mintor-backend
+    build:
+      context: ./backend
+    container_name: rebel-mintor-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - MNEMONIC=${MNEMONIC}
+      - RPC_URL=${RPC_URL}
+      - PORT=3000
+    networks:
+      - mintor-net
+
+  frontend:
+    image: rebel-mintor-frontend
+    build:
+      context: ./frontend
+      args:
+        - VITE_API_URL=http://localhost:3000
+    container_name: rebel-mintor-frontend
+    ports:
+      - "8080:8080"
+    networks:
+      - mintor-net
+
+networks:
+  mintor-net:
+    driver: bridge
